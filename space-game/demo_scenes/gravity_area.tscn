@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://db4o0efppilrd"]
+
+[ext_resource type="Script" uid="uid://48f0sk06sff4" path="res://demo_scenes/gravity_area.gd" id="1_owk0m"]
+
+[node name="GravityArea" type="Area3D" unique_id=29415861]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_owk0m")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1791498898]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1184813677]

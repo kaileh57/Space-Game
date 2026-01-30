@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://dujmhqjgq2af7"]
+
+[ext_resource type="Texture2D" uid="uid://cq4txleebpn60" path="res://assets/sky/qwantani_moon_noon_puresky_4k.exr" id="1_8ve88"]
+[ext_resource type="PackedScene" uid="uid://ye0tkdpmgwcm" path="res://demo_scenes/player.tscn" id="1_051bf"]
+[ext_resource type="PackedScene" uid="uid://db4o0efppilrd" path="res://demo_scenes/gravity_area.tscn" id="3_dogi7"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_dogi7"]
+panorama = ExtResource("1_8ve88")
+
+[sub_resource type="Sky" id="Sky_5vlvn"]
+sky_material = SubResource("PanoramaSkyMaterial_dogi7")
+
+[sub_resource type="Environment" id="Environment_k6eo2"]
+background_mode = 2
+sky = SubResource("Sky_5vlvn")
+ambient_light_source = 3
+reflected_light_source = 2
+
+[sub_resource type="BoxMesh" id="BoxMesh_8ve88"]
+size = Vector3(10, 1, 10)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_dogi7"]
+data = PackedVector3Array(-5, 0.5, 5, 5, 0.5, 5, -5, -0.5, 5, 5, 0.5, 5, 5, -0.5, 5, -5, -0.5, 5, 5, 0.5, -5, -5, 0.5, -5, 5, -0.5, -5, -5, 0.5, -5, -5, -0.5, -5, 5, -0.5, -5, 5, 0.5, 5, 5, 0.5, -5, 5, -0.5, 5, 5, 0.5, -5, 5, -0.5, -5, 5, -0.5, 5, -5, 0.5, -5, -5, 0.5, 5, -5, -0.5, -5, -5, 0.5, 5, -5, -0.5, 5, -5, -0.5, -5, 5, 0.5, 5, -5, 0.5, 5, 5, 0.5, -5, -5, 0.5, 5, -5, 0.5, -5, 5, 0.5, -5, -5, -0.5, 5, 5, -0.5, 5, -5, -0.5, -5, 5, -0.5, 5, 5, -0.5, -5, -5, -0.5, -5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dogi7"]
+size = Vector3(5, 5, 5)
+
+[node name="Demo" type="Node3D" unique_id=422930519]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1624966699]
+environment = SubResource("Environment_k6eo2")
+
+[node name="Player" parent="." unique_id=896817289 instance=ExtResource("1_051bf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.3698797, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1301941608]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.4442704, 0)
+mesh = SubResource("BoxMesh_8ve88")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D" unique_id=2129749551]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D" unique_id=1981783015]
+shape = SubResource("ConcavePolygonShape3D_dogi7")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=826142692]
+transform = Transform3D(1, 0, 0, 0, 0.66988254, 0.7424671, 0, -0.7424671, 0.66988254, 0, 0, 0)
+shadow_enabled = true
+
+[node name="GravityArea" parent="." unique_id=29415861 instance=ExtResource("3_dogi7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.09640622, -0.68747115, 0)
+grav = Vector3(0, -5, 0)
+target_shape = SubResource("BoxShape3D_dogi7")
