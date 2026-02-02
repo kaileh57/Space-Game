@@ -1,5 +1,6 @@
 @tool
 extends Area3D
+class_name GravityArea
 
 # This code by kellen
 # This is a tool, which means it runs in editor, to update some properties LIVE

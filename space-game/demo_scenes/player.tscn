@@ -11,31 +11,35 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_2okjc"]
 size = Vector3(1, 0.2709961, 1)
 
-[node name="Player" type="Node3D" unique_id=896817289]
-editor_description = "Note: this node stays still"
-
-[node name="CharacterBody3D" type="CharacterBody3D" parent="." unique_id=63512112]
+[node name="CharacterBody3D" type="CharacterBody3D" unique_id=63512112 node_paths=PackedStringArray("gravity_detector")]
 script = ExtResource("1_2okjc")
+gravity_detector = NodePath("Camera3D/HeadBox")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D" unique_id=2049883711]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2049883711]
 shape = SubResource("CapsuleShape3D_snhbk")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D" unique_id=649369569]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=649369569]
 mesh = SubResource("CapsuleMesh_2okjc")
 
-[node name="Camera3D" type="Camera3D" parent="CharacterBody3D" unique_id=1239464594]
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1239464594]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5612991, -0.46364725)
 current = true
 
-[node name="Area3D" type="Area3D" parent="CharacterBody3D/Camera3D" unique_id=450735382]
+[node name="HeadBox" type="Area3D" parent="Camera3D" unique_id=450735382]
 collision_layer = 2
 collision_mask = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/Camera3D/Area3D" unique_id=1731326021]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Camera3D/HeadBox" unique_id=1731326021]
 shape = SubResource("SphereShape3D_2okjc")
 
-[node name="Feet" type="Area3D" parent="CharacterBody3D" unique_id=817275457]
+[node name="Feet" type="Area3D" parent="." unique_id=817275457]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/Feet" unique_id=1675927137]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Feet" unique_id=1675927137]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9332448, 0)
 shape = SubResource("BoxShape3D_2okjc")
+
+[node name="Player" type="Node3D" parent="." unique_id=896817289]
+editor_description = "Note: this node stays still"
+
+[connection signal="area_entered" from="Camera3D/HeadBox" to="." method="_on_gravity_area_entered"]
+[connection signal="area_exited" from="Camera3D/HeadBox" to="." method="_on_gravity_area_exited"]
