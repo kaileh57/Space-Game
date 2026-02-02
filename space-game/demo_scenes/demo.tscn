@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://cq4txleebpn60" path="res://assets/sky/qwantani_moon_noon_puresky_4k.exr" id="1_8ve88"]
 [ext_resource type="PackedScene" uid="uid://ye0tkdpmgwcm" path="res://demo_scenes/player.tscn" id="1_051bf"]
+[ext_resource type="Texture2D" uid="uid://dh1qhjaspi2do" path="res://assets/prototype/Dark/texture_09.png" id="3_5vlvn"]
 [ext_resource type="PackedScene" uid="uid://db4o0efppilrd" path="res://demo_scenes/gravity_area.tscn" id="3_dogi7"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_dogi7"]
@@ -15,15 +16,21 @@ background_mode = 2
 sky = SubResource("Sky_5vlvn")
 ambient_light_source = 3
 reflected_light_source = 2
+ssr_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dogi7"]
+albedo_texture = ExtResource("3_5vlvn")
+uv1_scale = Vector3(100, 100, 100)
 
 [sub_resource type="BoxMesh" id="BoxMesh_8ve88"]
-size = Vector3(10, 1, 10)
+material = SubResource("StandardMaterial3D_dogi7")
+size = Vector3(100, 1, 100)
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_dogi7"]
-data = PackedVector3Array(-5, 0.5, 5, 5, 0.5, 5, -5, -0.5, 5, 5, 0.5, 5, 5, -0.5, 5, -5, -0.5, 5, 5, 0.5, -5, -5, 0.5, -5, 5, -0.5, -5, -5, 0.5, -5, -5, -0.5, -5, 5, -0.5, -5, 5, 0.5, 5, 5, 0.5, -5, 5, -0.5, 5, 5, 0.5, -5, 5, -0.5, -5, 5, -0.5, 5, -5, 0.5, -5, -5, 0.5, 5, -5, -0.5, -5, -5, 0.5, 5, -5, -0.5, 5, -5, -0.5, -5, 5, 0.5, 5, -5, 0.5, 5, 5, 0.5, -5, -5, 0.5, 5, -5, 0.5, -5, 5, 0.5, -5, -5, -0.5, 5, 5, -0.5, 5, -5, -0.5, -5, 5, -0.5, 5, 5, -0.5, -5, -5, -0.5, -5)
+data = PackedVector3Array(-50, 0.5, 50, 50, 0.5, 50, -50, -0.5, 50, 50, 0.5, 50, 50, -0.5, 50, -50, -0.5, 50, 50, 0.5, -50, -50, 0.5, -50, 50, -0.5, -50, -50, 0.5, -50, -50, -0.5, -50, 50, -0.5, -50, 50, 0.5, 50, 50, 0.5, -50, 50, -0.5, 50, 50, 0.5, -50, 50, -0.5, -50, 50, -0.5, 50, -50, 0.5, -50, -50, 0.5, 50, -50, -0.5, -50, -50, 0.5, 50, -50, -0.5, 50, -50, -0.5, -50, 50, 0.5, 50, -50, 0.5, 50, 50, 0.5, -50, -50, 0.5, 50, -50, 0.5, -50, 50, 0.5, -50, -50, -0.5, 50, 50, -0.5, 50, -50, -0.5, -50, 50, -0.5, 50, 50, -0.5, -50, -50, -0.5, -50)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dogi7"]
-size = Vector3(5, 5, 5)
+size = Vector3(50, 5, 50)
 
 [node name="Demo" type="Node3D" unique_id=422930519]
 
@@ -37,9 +44,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.3698797, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.4442704, 0)
 mesh = SubResource("BoxMesh_8ve88")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D" unique_id=2129749551]
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D" unique_id=1759557731]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D" unique_id=1981783015]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D" unique_id=1449646030]
 shape = SubResource("ConcavePolygonShape3D_dogi7")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=826142692]

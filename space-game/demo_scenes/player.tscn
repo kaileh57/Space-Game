@@ -15,7 +15,6 @@ size = Vector3(1, 0.2709961, 1)
 editor_description = "Note: this node stays still"
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="." unique_id=63512112]
-motion_mode = 1
 script = ExtResource("1_2okjc")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D" unique_id=2049883711]
