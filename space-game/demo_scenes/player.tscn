@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://ye0tkdpmgwcm"]
 
 [ext_resource type="Script" uid="uid://dy5ynvgt2l43a" path="res://demo_scenes/character.gd" id="1_2okjc"]
+[ext_resource type="AudioStream" uid="uid://da384idss74or" path="res://assets/sounds/thruster.mp3" id="2_pg63y"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_snhbk"]
 
@@ -8,12 +9,23 @@
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_2okjc"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2okjc"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_pg63y"]
+material = SubResource("StandardMaterial3D_2okjc")
+size = Vector3(0.5, 0.1, 0.1)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_2okjc"]
 size = Vector3(1, 0.2709961, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_oi33k"]
+size = Vector3(0.8, 1, 0.4)
 
 [node name="CharacterBody3D" type="CharacterBody3D" unique_id=63512112 node_paths=PackedStringArray("gravity_detector")]
 script = ExtResource("1_2okjc")
 gravity_detector = NodePath("Camera3D/HeadBox")
+deceleration_volume = 0.5
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2049883711]
 shape = SubResource("CapsuleShape3D_snhbk")
@@ -26,11 +38,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5612991, -0.46364725)
 current = true
 
 [node name="HeadBox" type="Area3D" parent="Camera3D" unique_id=450735382]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.22854209)
 collision_layer = 2
 collision_mask = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Camera3D/HeadBox" unique_id=1731326021]
 shape = SubResource("SphereShape3D_2okjc")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Camera3D" unique_id=1655904599]
+mesh = SubResource("BoxMesh_pg63y")
 
 [node name="Feet" type="Area3D" parent="." unique_id=817275457]
 
@@ -40,6 +56,16 @@ shape = SubResource("BoxShape3D_2okjc")
 
 [node name="Player" type="Node3D" parent="." unique_id=896817289]
 editor_description = "Note: this node stays still"
+
+[node name="Jetpack" type="MeshInstance3D" parent="." unique_id=1366845298]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.41749555)
+mesh = SubResource("BoxMesh_oi33k")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Jetpack" unique_id=1053540086]
+stream = ExtResource("2_pg63y")
+pitch_scale = 0.75
+mix_target = 2
+parameters/looping = false
 
 [connection signal="area_entered" from="Camera3D/HeadBox" to="." method="_on_gravity_area_entered"]
 [connection signal="area_exited" from="Camera3D/HeadBox" to="." method="_on_gravity_area_exited"]

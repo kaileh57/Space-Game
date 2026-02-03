@@ -26,24 +26,35 @@ var active_gravity_areas: Array[Area3D] = []
 @export var fly_max_speed: float = 20.0
 @export var fly_move_acceleration: float = 8.0
 @export var fly_sensitivity: float = 0.002
+@export var safety_mode: bool = true
 
 @export_subgroup("Roll Physics")
 @export var roll_acceleration: float = 1.5
 @export var max_roll_speed: float = 1.5
 @export var roll_friction: float = 1.5
 
+@export_subgroup("Thruster Audio")
+@export var thruster_fade_speed: float = 1000.0
+@export var thruster_max_volume_db: float = 0.0
+@export var thruster_min_volume_db: float = -80.0
+@export var deceleration_volume: float = 0.7
+
 @export_group("Gravity Transition")
 @export var alignment_speed: float = 6.0
 @export var alignment_threshold: float = 0.01
 
 @onready var camera = $Camera3D
+@onready var sound: AudioStreamPlayer = $Jetpack/AudioStreamPlayer
 
 var _current_roll_velocity: float = 0.0
 var _target_basis: Basis
 var _stored_look_pitch: float = 0.0
+var _is_thrusting: bool = false
+var _is_decelerating: bool = false
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	sound.volume_db = thruster_min_volume_db
 
 func _unhandled_input(event):
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
@@ -61,6 +72,9 @@ func _unhandled_input(event):
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	elif event is InputEventMouseButton and event.pressed:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	
+	if event.is_action_pressed("ui_accept") and current_mode == Mode.FLYING:
+		safety_mode = !safety_mode
 
 func _physics_process(delta):
 	match current_mode:
@@ -70,6 +84,8 @@ func _physics_process(delta):
 			_process_flying(delta)
 		Mode.TRANSITIONING:
 			_process_transition(delta)
+	
+	_update_thruster_sound(delta)
 
 func _on_gravity_area_entered(area: Area3D):
 	if "grav" in area or area.get("grav") != null:
@@ -82,6 +98,9 @@ func _on_gravity_area_exited(area: Area3D):
 		_update_gravity_state()
 
 func _update_gravity_state():
+	if current_mode == Mode.TRANSITIONING:
+		return
+	
 	if active_gravity_areas.size() > 0:
 		var latest_area = active_gravity_areas.back()
 		if "grav" in latest_area:
@@ -96,6 +115,8 @@ func _update_gravity_state():
 func _begin_transition_to_walking():
 	current_mode = Mode.TRANSITIONING
 	_stored_look_pitch = rotation.x
+	_is_thrusting = false
+	_is_decelerating = false
 	
 	var target_up = -current_gravity_vector.normalized()
 	var current_forward = -transform.basis.z
@@ -112,9 +133,12 @@ func _begin_transition_to_walking():
 	_target_basis = Basis(target_right, target_up, -corrected_forward)
 
 func _process_transition(delta):
+	if active_gravity_areas.size() == 0:
+		_switch_to_flying()
+		return
+	
 	var current_quat = transform.basis.get_rotation_quaternion()
 	var target_quat = _target_basis.get_rotation_quaternion()
-	
 	var new_quat = current_quat.slerp(target_quat, alignment_speed * delta)
 	transform.basis = Basis(new_quat)
 	
@@ -189,9 +213,13 @@ func _process_walking(delta):
 	move_and_slide()
 
 func _process_flying(delta):
+	_is_thrusting = false
+	_is_decelerating = false
+	
 	var roll_input = Input.get_axis("q", "e")
 	if roll_input != 0:
 		_current_roll_velocity -= roll_input * roll_acceleration * delta
+		_is_thrusting = true
 	else:
 		_current_roll_velocity = move_toward(_current_roll_velocity, 0, roll_friction * delta)
 	
@@ -210,8 +238,43 @@ func _process_flying(delta):
 		thrust = thrust.normalized()
 	
 	if thrust != Vector3.ZERO:
+		_is_thrusting = true
 		velocity += thrust * fly_move_acceleration * delta
-		if velocity.length() > fly_max_speed:
+		if safety_mode and velocity.length() > fly_max_speed:
 			velocity = velocity.normalized() * fly_max_speed
+	elif safety_mode and velocity.length() > 0.5:
+		_is_decelerating = true
+		var dampen_rate = fly_move_acceleration * 0.5
+		velocity = velocity.move_toward(Vector3.ZERO, dampen_rate * delta)
+	elif velocity.length() > 0.01:
+		velocity = velocity.move_toward(Vector3.ZERO, fly_move_acceleration * 0.5 * delta)
+	else:
+		velocity = Vector3.ZERO
 	
 	move_and_slide()
+
+func _update_thruster_sound(delta):
+	if current_mode != Mode.FLYING:
+		_is_thrusting = false
+		_is_decelerating = false
+	
+	var target_volume = thruster_min_volume_db
+	var should_play = false
+	
+	if _is_thrusting:
+		target_volume = thruster_max_volume_db
+		should_play = true
+	elif _is_decelerating:
+		var max_linear = db_to_linear(thruster_max_volume_db)
+		var scaled_linear = max_linear * deceleration_volume
+		target_volume = linear_to_db(scaled_linear)
+		should_play = true
+	
+	if should_play:
+		if not sound.playing:
+			sound.play()
+		sound.volume_db = move_toward(sound.volume_db, target_volume, thruster_fade_speed * delta)
+	else:
+		sound.volume_db = move_toward(sound.volume_db, thruster_min_volume_db, thruster_fade_speed * delta)
+		if sound.volume_db <= thruster_min_volume_db + 1.0:
+			sound.stop()
