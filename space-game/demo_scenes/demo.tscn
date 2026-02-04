@@ -4,6 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://ye0tkdpmgwcm" path="res://demo_scenes/player.tscn" id="1_051bf"]
 [ext_resource type="Texture2D" uid="uid://dh1qhjaspi2do" path="res://assets/prototype/Dark/texture_09.png" id="3_5vlvn"]
 [ext_resource type="PackedScene" uid="uid://db4o0efppilrd" path="res://demo_scenes/gravity_area.tscn" id="3_dogi7"]
+[ext_resource type="Texture2D" uid="uid://uxtdy1c7xouq" path="res://assets/prototype/Red/texture_05.png" id="4_injkl"]
+[ext_resource type="Texture2D" uid="uid://cypafbfhyhaf4" path="res://assets/prototype/Orange/texture_10.png" id="5_k6eo2"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_dogi7"]
 panorama = ExtResource("1_8ve88")
@@ -18,19 +20,21 @@ ambient_light_source = 3
 reflected_light_source = 2
 ssr_enabled = true
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5vlvn"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_injkl"]
+albedo_texture = ExtResource("5_k6eo2")
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0vdwl"]
+albedo_texture = ExtResource("4_injkl")
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k6eo2"]
 albedo_texture = ExtResource("3_5vlvn")
-uv1_scale = Vector3(100, 66, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_8ve88"]
-material = SubResource("StandardMaterial3D_5vlvn")
-size = Vector3(100, 1, 100)
-
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_dogi7"]
-data = PackedVector3Array(-50, 0.5, 50, 50, 0.5, 50, -50, -0.5, 50, 50, 0.5, 50, 50, -0.5, 50, -50, -0.5, 50, 50, 0.5, -50, -50, 0.5, -50, 50, -0.5, -50, -50, 0.5, -50, -50, -0.5, -50, 50, -0.5, -50, 50, 0.5, 50, 50, 0.5, -50, 50, -0.5, 50, 50, 0.5, -50, 50, -0.5, -50, 50, -0.5, 50, -50, 0.5, -50, -50, 0.5, 50, -50, -0.5, -50, -50, 0.5, 50, -50, -0.5, 50, -50, -0.5, -50, 50, 0.5, 50, -50, 0.5, 50, 50, 0.5, -50, -50, 0.5, 50, -50, 0.5, -50, 50, 0.5, -50, -50, -0.5, 50, 50, -0.5, 50, -50, -0.5, -50, 50, -0.5, 50, 50, -0.5, -50, -50, -0.5, -50)
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dogi7"]
-size = Vector3(50, 20, 50)
+size = Vector3(100, 50, 50)
 
 [node name="Demo" type="Node3D" unique_id=422930519]
 
@@ -38,22 +42,106 @@ size = Vector3(50, 20, 50)
 environment = SubResource("Environment_k6eo2")
 
 [node name="Player" parent="." unique_id=896817289 instance=ExtResource("1_051bf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.3698797, 0)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1301941608]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.4442704, 0)
-mesh = SubResource("BoxMesh_8ve88")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D" unique_id=1759557731]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D" unique_id=1449646030]
-shape = SubResource("ConcavePolygonShape3D_dogi7")
+transform = Transform3D(-4.3711385e-08, 0, -0.99999994, 0, 1, 0, 0.99999994, 0, -4.3711385e-08, -90, 4.37, 0)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=826142692]
 transform = Transform3D(1, 0, 0, 0, 0.66988254, 0.7424671, 0, -0.7424671, 0.66988254, 0, 0, 0)
 shadow_enabled = true
+metadata/_edit_lock_ = true
 
-[node name="GravityArea" parent="." unique_id=29415861 instance=ExtResource("3_dogi7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.09640622, 6.2811394, 0)
+[node name="Orange" type="CSGCombiner3D" parent="." unique_id=306126]
+material_override = SubResource("StandardMaterial3D_injkl")
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Orange" unique_id=688341694]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.55127, 0.045936584, 1.9140015)
+size = Vector3(62.10254, 1, 4.828003)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Orange" unique_id=211744334]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.43219, 0.70944977, 1.9140015)
+size = Vector3(5.6324463, 2.3270264, 4.828003)
+
+[node name="Label3D3" type="Label3D" parent="Orange" unique_id=86219084]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -41.76963, 3.2943478, 1.6944096)
+visibility_range_end = 8.0
+billboard = 2
+shaded = true
+text = "JUMP!!!"
+font_size = 64
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Orange" unique_id=465287138]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.794649, 1.332222, 1.9140015)
+size = Vector3(5.6324463, 3.5725708, 4.828003)
+
+[node name="Label3D4" type="Label3D" parent="Orange" unique_id=643144566]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.13209, 3.2943478, 1.6944096)
+visibility_range_end = 8.0
+billboard = 2
+shaded = true
+text = "JETPACK!!!"
+font_size = 64
+
+[node name="Red" type="CSGCombiner3D" parent="." unique_id=2024108917]
+material_override = SubResource("StandardMaterial3D_0vdwl")
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Red" unique_id=1852670100]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, -0.99999994, 0, 0.99999994, -4.3711385e-08, -64.19069, 10.235487, 1.9140016)
+size = Vector3(1, 1, 8.87738)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Red" unique_id=1341115557]
+transform = Transform3D(1, 0, 0, 0, -0.6069459, -0.794743, 0, 0.794743, -0.6069459, -64.19069, 7.660508, 3.1888294)
+size = Vector3(1, 1, 3.9395447)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Red" unique_id=279924192]
+transform = Transform3D(-1, 8.742277e-08, 0, -5.3098486e-08, -0.6073758, -0.79441464, -6.944993e-08, -0.7944146, 0.60737586, -64.19069, 7.660508, 0.6851196)
+size = Vector3(1, 1, 3.9395447)
+
+[node name="Label3D2" type="Label3D" parent="Red" unique_id=441540036]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -64.88399, 3.2943478, 1.6944096)
+billboard = 2
+shaded = true
+text = "Good job learning how to use the jetpack
+now we will learn to crouch and slide
+use shift to sprint, C to crouch
+if you crouch while sprinting, you will slide
+you can jump out of slides for extra speed!
+follow the orange line"
+
+[node name="Black" type="CSGCombiner3D" parent="." unique_id=1252388298]
+material_override = SubResource("StandardMaterial3D_k6eo2")
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Black" unique_id=1216687509]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.9140015)
+size = Vector3(200, 1, 50)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Black" unique_id=1964036221]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -86.54385, 2.3214154, 9.616083)
+size = Vector3(19.36023, 6.9991455, 1)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Black" unique_id=1514808747]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -86.307526, 2.3214154, -4.4040394)
+size = Vector3(19.832886, 6.9991455, 1)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Black" unique_id=1882968501]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -95.5018, 2.3214154, 2.5178967)
+size = Vector3(1.4443359, 6.9991455, 14.843872)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="Black" unique_id=302758728]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -76.45122, 2.3214154, 2.5178967)
+size = Vector3(1.4443359, 6.9991455, 14.843872)
+
+[node name="Label3D" type="Label3D" parent="Black" unique_id=2062132985]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -80.967514, 3.2943478, 1.6944096)
+billboard = 2
+shaded = true
+text = "Hello, welcome to the tutorial area!
+Walk around with WASD, jump with SPACEBAR.
+When you are ready, fly out of the box, 
+and look for the RED ARROW"
+
+[node name="GravityArea" parent="Black" unique_id=29415861 instance=ExtResource("3_dogi7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50.59812, 24.850464, 2.2427864)
 grav = Vector3(0, -10, 0)
 target_shape = SubResource("BoxShape3D_dogi7")
