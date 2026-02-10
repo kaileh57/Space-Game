@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://ye0tkdpmgwcm"]
 
 [ext_resource type="Script" uid="uid://dy5ynvgt2l43a" path="res://demo_scenes/character.gd" id="1_2okjc"]
+[ext_resource type="Shader" uid="uid://b3mltq3dlcvjx" path="res://demo_scenes/shader.gdshader" id="2_oi33k"]
 [ext_resource type="AudioStream" uid="uid://da384idss74or" path="res://assets/sounds/thruster.mp3" id="2_pg63y"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_snhbk"]
@@ -15,6 +16,29 @@ albedo_color = Color(0, 0, 0, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_pg63y"]
 material = SubResource("StandardMaterial3D_2okjc")
 size = Vector3(0.5, 0.1, 0.1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oi33k"]
+shader = ExtResource("2_oi33k")
+shader_parameter/chromatic_enabled = true
+shader_parameter/chromatic_amount = 2.0
+shader_parameter/chromatic_radial = true
+shader_parameter/crt_enabled = true
+shader_parameter/scanline_opacity = 0.15
+shader_parameter/scanline_density = 400.0
+shader_parameter/crt_curve = 2.0
+shader_parameter/crt_vignette = 0.3
+shader_parameter/noise_intensity = 0.04
+shader_parameter/flicker_intensity = 0.02
+shader_parameter/film_enabled = true
+shader_parameter/grain_amount = 0.06
+shader_parameter/saturation = 1.3
+shader_parameter/contrast = 1.1
+shader_parameter/brightness = 0.02
+shader_parameter/color_tint = Color(1, 0.98, 0.95, 1)
+shader_parameter/radial_blur_enabled = false
+shader_parameter/blur_strength = 0.01
+shader_parameter/blur_samples = 6
+shader_parameter/blur_center = Vector2(0.5, 0.5)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_2okjc"]
 size = Vector3(1, 0.2709961, 1)
@@ -52,9 +76,9 @@ mesh = SubResource("BoxMesh_pg63y")
 
 [node name="Readout" type="Control" parent="Camera3D" unique_id=1171336517]
 layout_mode = 3
-anchors_preset = 15
+anchor_left = 0.013888889
 anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_bottom = 1.4583334
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
@@ -63,6 +87,17 @@ metadata/_edit_use_anchors_ = true
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Camera3D" unique_id=487176435]
+layer = 0
+
+[node name="ColorRect" type="ColorRect" parent="Camera3D/CanvasLayer" unique_id=1540843795]
+material = SubResource("ShaderMaterial_oi33k")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Feet" type="Area3D" parent="." unique_id=817275457]
 

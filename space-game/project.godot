@@ -83,3 +83,5 @@ common/physics_ticks_per_second=120
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+anti_aliasing/quality/msaa_2d=2
+anti_aliasing/quality/msaa_3d=2
