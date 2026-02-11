@@ -5,7 +5,7 @@ uniform sampler2D screen_texture : hint_screen_texture, filter_linear_mipmap;
 // chromatic aberration
 group_uniforms chromatic_aberration;
 uniform bool chromatic_enabled = true;
-uniform float chromatic_amount : hint_range(0.0, 10.0) = 2.0;
+uniform float chromatic_amount : hint_range(0.0, 10.0) = 10.0;
 uniform bool chromatic_radial = true;
 
 // scanlines / CRT

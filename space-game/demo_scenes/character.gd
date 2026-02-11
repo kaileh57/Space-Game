@@ -138,6 +138,8 @@ func _input(event: InputEvent):
 				_jetpack_horizontal_velocity = _jetpack_horizontal_velocity * (1.0 - speed_loss)
 
 func _unhandled_input(event: InputEvent):
+	if event.is_action_pressed("flash"):
+		$Camera3D/SpotLight3D.visible = !$Camera3D/SpotLight3D.visible
 	if event.is_action_pressed("ui_cancel"):
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE

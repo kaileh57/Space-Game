@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://dy5ynvgt2l43a" path="res://demo_scenes/character.gd" id="1_2okjc"]
 [ext_resource type="Shader" uid="uid://b3mltq3dlcvjx" path="res://demo_scenes/shader.gdshader" id="2_oi33k"]
 [ext_resource type="AudioStream" uid="uid://da384idss74or" path="res://assets/sounds/thruster.mp3" id="2_pg63y"]
-[ext_resource type="Shader" uid="uid://c32in5hm56evh" path="res://demo_scenes/toon.gdshader" id="3_jmmof"]
+[ext_resource type="Shader" path="res://demo_scenes/toon.gdshader" id="3_jmmof"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_snhbk"]
 
@@ -120,6 +120,12 @@ grow_vertical = 2
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="Camera3D" unique_id=378214847]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.06084776)
 mesh = SubResource("QuadMesh_oi33k")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Camera3D" unique_id=2115228834]
+visible = false
+light_energy = 20.0
+spot_range = 20.0
+spot_angle = 30.0
 
 [node name="Feet" type="Area3D" parent="." unique_id=817275457]
 
