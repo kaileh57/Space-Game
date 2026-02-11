@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dy5ynvgt2l43a" path="res://demo_scenes/character.gd" id="1_2okjc"]
 [ext_resource type="Shader" uid="uid://b3mltq3dlcvjx" path="res://demo_scenes/shader.gdshader" id="2_oi33k"]
 [ext_resource type="AudioStream" uid="uid://da384idss74or" path="res://assets/sounds/thruster.mp3" id="2_pg63y"]
+[ext_resource type="Shader" uid="uid://c32in5hm56evh" path="res://demo_scenes/toon.gdshader" id="3_jmmof"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_snhbk"]
 
@@ -39,6 +40,23 @@ shader_parameter/radial_blur_enabled = false
 shader_parameter/blur_strength = 0.01
 shader_parameter/blur_samples = 6
 shader_parameter/blur_center = Vector2(0.5, 0.5)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k3jfo"]
+render_priority = -100
+shader = ExtResource("3_jmmof")
+shader_parameter/sky_depth_threshold = 0.999
+shader_parameter/outline_enabled = true
+shader_parameter/depth_threshold = 1.5
+shader_parameter/normal_threshold = 0.5
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_opacity = 0.8
+shader_parameter/shade_enabled = true
+shader_parameter/shade_steps = 3
+shader_parameter/shade_strength = 0.4
+
+[sub_resource type="QuadMesh" id="QuadMesh_oi33k"]
+material = SubResource("ShaderMaterial_k3jfo")
+size = Vector2(2, 2)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_2okjc"]
 size = Vector3(1, 0.2709961, 1)
@@ -98,6 +116,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Camera3D" unique_id=378214847]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.06084776)
+mesh = SubResource("QuadMesh_oi33k")
 
 [node name="Feet" type="Area3D" parent="." unique_id=817275457]
 
